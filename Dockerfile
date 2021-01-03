@@ -76,7 +76,9 @@ RUN set -eux \
     nvim -u /root/.config/nvim/init.vim --headless +'PlugInstall' +qa \
   ; rm -rf /root/.config/nvim/plugged/*/.git \
   ; for x in $(cat /etc/skel/.config/nvim/coc-core-extensions) \
-  ; do nvim -u /root/.config/nvim/init.vim --headless +"CocInstall -sync coc-$x" +qa; done
+  ; do nvim -u /root/.config/nvim/init.vim --headless +"CocInstall -sync coc-$x" +qa; done \
+  #; npm config set registry https://registry.npm.taobao.org \
+  ; npm cache clean -f
 
 WORKDIR /root
 

@@ -75,25 +75,10 @@ RUN set -eux \
   ; NVIM_SETUP_PLUGINS=1 \
     nvim -u /root/.config/nvim/init.vim --headless +'PlugInstall' +qa \
   ; rm -rf /root/.config/nvim/plugged/*/.git \
-  ; for x in \
-        explorer \
-        snippets \
-        git \
-        yank \
-        bookmark \
-        yaml \
-        json \
-        tasks \
-        calc \
-        vimlsp \
-        sh \
-        pyright \
-        rust-analyzer \
-        docker \
-        go \
-        java \
-        metals \
-        hightlight \
+  ; for x in $(cat /root/.config/nvim/coc-core-extensions) \
   ; do nvim -u /root/.config/nvim/init.vim --headless +"CocInstall -sync coc-$x" +qa; done \
-  ; echo
+  ; for x in java metals \
+  ; do nvim -u /root/.config/nvim/init.vim --headless +"CocInstall -sync coc-$x" +qa; done \
+  #; npm config set registry https://registry.npm.taobao.org \
+  ; npm cache clean -f
 
