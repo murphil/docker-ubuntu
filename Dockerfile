@@ -73,10 +73,12 @@ RUN set -eux \
   ; mkdir /etc/skel/.config \
   ; git clone --depth=1 https://github.com/murphil/nvim-coc.git /etc/skel/.config/nvim \
   ; NVIM_SETUP_PLUGINS=1 \
-    nvim -u /root/.config/nvim/init.vim --headless +'PlugInstall' +qa \
-  ; rm -rf /root/.config/nvim/plugged/*/.git \
+    nvim -u /etc/skel/.config/nvim/init.vim --headless +'PlugInstall' +qa \
+  ; rm -rf /etc/skel/.config/nvim/plugged/*/.git \
   ; for x in $(cat /etc/skel/.config/nvim/coc-core-extensions) \
-  ; do nvim -u /root/.config/nvim/init.vim --headless +"CocInstall -sync coc-$x" +qa; done \
+  ; do nvim -u /etc/skel/.config/nvim/init.vim --headless +"CocInstall -sync coc-$x" +qa; done \
+  ; mv /etc/skel/.config/nvim/coc-data /opt \
+  ; ln -sf /opt/coc-data /etc/skel/.config/nvim \
   #; npm config set registry https://registry.npm.taobao.org \
   ; npm cache clean -f
 
