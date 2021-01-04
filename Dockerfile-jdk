@@ -20,11 +20,10 @@ RUN set -eux \
       python3 python3-pip python3-setuptools ipython3 \
       build-essential default-jdk \
   \
-  ; curl -sSL ${nvim_url} | tar zxf - -C /usr/local --strip-components=1 \
   ; curl -sL https://deb.nodesource.com/setup_14.x | bash - \
-  ; apt-get install -y --no-install-recommends \
-      nodejs python3-neovim \
-  ; pip3 --no-cache-dir install neovim-remote \
+  ; apt-get install -y --no-install-recommends nodejs \
+  ; curl -sSL ${nvim_url} | tar zxf - -C /usr/local --strip-components=1 \
+  ; pip3 --no-cache-dir install neovim neovim-remote \
   ; mkdir -p /opt/language-server \
   \
   ; ln -sf /usr/share/zoneinfo/$TIMEZONE /etc/localtime \
