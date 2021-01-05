@@ -48,31 +48,26 @@ ARG websocat_repo=vi/websocat
 ARG wasmtime_repo=bytecodealliance/wasmtime
 
 RUN set -ex \
-  ; just_version=$(curl -sSL -H "Accept: application/vnd.github.v3+json"  https://api.github.com/repos/${just_repo}/releases | jq -r '.[0].tag_name') \
-  ; watchexec_version=$(curl -sSL -H "Accept: application/vnd.github.v3+json"  https://api.github.com/repos/${watchexec_repo}/releases | jq -r '.[0].tag_name') \
-  ; yq_version=$(curl -sSL -H "Accept: application/vnd.github.v3+json"  https://api.github.com/repos/${yq_repo}/releases | jq -r '.[0].tag_name') \
-  ; websocat_version=$(curl -sSL -H "Accept: application/vnd.github.v3+json"  https://api.github.com/repos/${websocat_repo}/releases | jq -r '.[0].tag_name') \
-  ; wasmtime_version=$(curl -sSL -H "Accept: application/vnd.github.v3+json"  https://api.github.com/repos/${wasmtime_repo}/releases | jq -r '.[0].tag_name') \
-  ; echo "just_version $just_version" \
-  ; echo "watchexec_version $watchexec_version" \
-  ; echo "yq_version $yq_version" \
-  ; echo "websocat_version $websocat_version" \
-  ; echo "wasmtime_version $wasmtime_version" \
+  ; just_version=$(curl -sSL -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/${just_repo}/releases | jq -r '.[0].tag_name') \
   ; just_url=https://github.com/${just_repo}/releases/download/${just_version}/just-${just_version}-x86_64-unknown-linux-musl.tar.gz \
-  ; watchexec_url=https://github.com/${watchexec_repo}/releases/download/${watchexec_version}/watchexec-${watchexec_version}-x86_64-unknown-linux-musl.tar.xz \
-  ; yq_url=https://github.com/${yq_repo}/releases/download/${yq_version}/yq_linux_amd64 \
-  ; websocat_url=https://github.com/${websocat_repo}/releases/download/${websocat_version}/websocat_amd64-linux-static \
-  ; wasmtime_url=https://github.com/${wasmtime_repo}/releases/download/${wasmtime_version}/wasmtime-${wasmtime_version}-x86_64-linux.tar.xz \
   ; wget -q -O- ${just_url} \
     | tar zxf - -C /usr/local/bin just \
+  ; watchexec_version=$(curl -sSL -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/${watchexec_repo}/releases | jq -r '.[0].tag_name') \
+  ; watchexec_url=https://github.com/${watchexec_repo}/releases/download/${watchexec_version}/watchexec-${watchexec_version}-x86_64-unknown-linux-musl.tar.xz \
   ; wget -q -O- ${watchexec_url} \
     | tar Jxf - --strip-components=1 -C /usr/local/bin watchexec-${watchexec_version}-x86_64-unknown-linux-musl/watchexec \
+  ; yq_version=$(curl -sSL -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/${yq_repo}/releases | jq -r '.[0].tag_name') \
+  ; yq_url=https://github.com/${yq_repo}/releases/download/${yq_version}/yq_linux_amd64 \
   ; wget -q -O /usr/local/bin/yq ${yq_url} \
     ; chmod +x /usr/local/bin/yq \
+  ; websocat_version=$(curl -sSL -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/${websocat_repo}/releases | jq -r '.[0].tag_name') \
+  ; websocat_url=https://github.com/${websocat_repo}/releases/download/${websocat_version}/websocat_amd64-linux-static \
   ; wget -q -O /usr/local/bin/websocat ${websocat_url} \
     ; chmod +x /usr/local/bin/websocat \
+  ; wasmtime_version=$(curl -sSL -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/${wasmtime_repo}/releases | jq -r '.[0].tag_name') \
+  ; wasmtime_url=https://github.com/${wasmtime_repo}/releases/download/${wasmtime_version}/wasmtime-${wasmtime_version}-x86_64-linux.tar.xz \
   ; wget -O- ${wasmtime_url} | tar Jxf - --strip-components=1 -C /usr/local/bin \
-    wasmtime-v${wasmtime_version}-x86_64-linux/wasmtime
+    wasmtime-${wasmtime_version}-x86_64-linux/wasmtime
 
 # conf
 RUN set -eux \
