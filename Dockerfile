@@ -6,11 +6,6 @@ ENV TIMEZONE=Asia/Shanghai
 
 ARG NVIM_VERSION
 ARG nvim_url=https://github.com/neovim/neovim/releases/download/${NVIM_VERSION:-nightly}/nvim-linux64.tar.gz
-ENV just_version=0.8.3
-ENV watchexec_version=1.14.1
-ENV yq_version=4.2.1
-ENV websocat_version=1.6.0
-ENV wasmtime_version=0.21.0
 
 ENV PYTHONUNBUFFERED=x
 
@@ -46,13 +41,28 @@ RUN set -eux \
         -e 's!.*\(PasswordAuthentication\).*yes!\1 no!' \
   ; apt-get autoremove -y && apt-get clean -y && rm -rf /var/lib/apt/lists/*
 
-ARG just_url=https://github.com/casey/just/releases/download/v${just_version}/just-v${just_version}-x86_64-unknown-linux-musl.tar.gz
-ARG watchexec_url=https://github.com/watchexec/watchexec/releases/download/${watchexec_version}/watchexec-${watchexec_version}-x86_64-unknown-linux-musl.tar.xz
-ARG yq_url=https://github.com/mikefarah/yq/releases/download/v${yq_version}/yq_linux_amd64
-ARG websocat_url=https://github.com/vi/websocat/releases/download/v${websocat_version}/websocat_amd64-linux-static
-ARG wasmtime_url=https://github.com/bytecodealliance/wasmtime/releases/download/v${wasmtime_version}/wasmtime-v${wasmtime_version}-x86_64-linux.tar.xz
+ARG just_repo=casey/just
+ARG watchexec_repo=watchexec/watchexec
+ARG yq_repo=mikefarah/yq
+ARG websocat_repo=vi/websocat
+ARG wasmtime_repo=bytecodealliance/wasmtime
 
 RUN set -ex \
+  ; just_version=$(curl -sSL -H "Accept: application/vnd.github.v3+json"  https://api.github.com/repos/${just_repo}/releases | jq -r '.[0].tag_name') \
+  ; watchexec_version=$(curl -sSL -H "Accept: application/vnd.github.v3+json"  https://api.github.com/repos/${watchexec_repo}/releases | jq -r '.[0].tag_name') \
+  ; yq_version=$(curl -sSL -H "Accept: application/vnd.github.v3+json"  https://api.github.com/repos/${yq_repo}/releases | jq -r '.[0].tag_name') \
+  ; websocat_version=$(curl -sSL -H "Accept: application/vnd.github.v3+json"  https://api.github.com/repos/${watchexec_repo}/releases | jq -r '.[0].tag_name') \
+  ; wasmtime_version=$(curl -sSL -H "Accept: application/vnd.github.v3+json"  https://api.github.com/repos/${wasmtime_repo}/releases | jq -r '.[0].tag_name') \
+  ; echo "just_version $just_version" \
+  ; echo "watchexec_version $watchexec_version" \
+  ; echo "yq_version $yq_version" \
+  ; echo "websocat_version $websocat_version" \
+  ; echo "wasmtime_version $wasmtime_version" \
+  ; just_url=https://github.com/${just_repo}/releases/download/${just_version}/just-${just_version}-x86_64-unknown-linux-musl.tar.gz \
+  ; watchexec_url=https://github.com/${websocat_repo}/releases/download/${watchexec_version}/watchexec-${watchexec_version}-x86_64-unknown-linux-musl.tar.xz \
+  ; yq_url=https://github.com/${yq_repo}/releases/download/${yq_version}/yq_linux_amd64 \
+  ; websocat_url=https://github.com/${websocat_repo}/releases/download/${websocat_version}/websocat_amd64-linux-static \
+  ; wasmtime_url=https://github.com/${wasmtime_repo}/releases/download/${wasmtime_version}/wasmtime-${wasmtime_version}-x86_64-linux.tar.xz \
   ; wget -q -O- ${just_url} \
     | tar zxf - -C /usr/local/bin just \
   ; wget -q -O- ${watchexec_url} \
@@ -62,7 +72,7 @@ RUN set -ex \
   ; wget -q -O /usr/local/bin/websocat ${websocat_url} \
     ; chmod +x /usr/local/bin/websocat \
   ; wget -O- ${wasmtime_url} | tar Jxf - --strip-components=1 -C /usr/local/bin \
-        wasmtime-v${wasmtime_version}-x86_64-linux/wasmtime
+    wasmtime-v${wasmtime_version}-x86_64-linux/wasmtime
 
 # conf
 RUN set -eux \
