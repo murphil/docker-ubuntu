@@ -51,7 +51,7 @@ RUN set -ex \
   ; just_version=$(curl -sSL -H "Accept: application/vnd.github.v3+json"  https://api.github.com/repos/${just_repo}/releases | jq -r '.[0].tag_name') \
   ; watchexec_version=$(curl -sSL -H "Accept: application/vnd.github.v3+json"  https://api.github.com/repos/${watchexec_repo}/releases | jq -r '.[0].tag_name') \
   ; yq_version=$(curl -sSL -H "Accept: application/vnd.github.v3+json"  https://api.github.com/repos/${yq_repo}/releases | jq -r '.[0].tag_name') \
-  ; websocat_version=$(curl -sSL -H "Accept: application/vnd.github.v3+json"  https://api.github.com/repos/${watchexec_repo}/releases | jq -r '.[0].tag_name') \
+  ; websocat_version=$(curl -sSL -H "Accept: application/vnd.github.v3+json"  https://api.github.com/repos/${websocat_repo}/releases | jq -r '.[0].tag_name') \
   ; wasmtime_version=$(curl -sSL -H "Accept: application/vnd.github.v3+json"  https://api.github.com/repos/${wasmtime_repo}/releases | jq -r '.[0].tag_name') \
   ; echo "just_version $just_version" \
   ; echo "watchexec_version $watchexec_version" \
