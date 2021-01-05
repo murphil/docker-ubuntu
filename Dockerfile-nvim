@@ -33,11 +33,10 @@ RUN set -eux \
   ; apt-get autoremove -y && apt-get clean -y && rm -rf /var/lib/apt/lists/*
 
 RUN set -ex \
-  ; curl -sSL ${nvim_url} | tar zxf - -C /usr/local --strip-components=1 \
   ; curl -sL https://deb.nodesource.com/setup_14.x | bash - \
-  ; apt-get install -y --no-install-recommends \
-      nodejs python3-neovim \
-  ; pip3 --no-cache-dir install neovim-remote \
+  ; apt-get install -y --no-install-recommends nodejs \
+  ; curl -sSL ${nvim_url} | tar zxf - -C /usr/local --strip-components=1 \
+  ; pip3 --no-cache-dir install neovim neovim-remote \
   \
   ; git clone --depth=1 https://github.com/murphil/.zshrc.d.git \
   ; ln -sf .zshrc.d/_zshrc $HOME/.zshrc \
