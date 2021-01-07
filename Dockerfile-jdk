@@ -1,4 +1,4 @@
-FROM ub:latest
+FROM nnurphy/ub:latest
 
 RUN set -eux \
   ; apt-get update \
