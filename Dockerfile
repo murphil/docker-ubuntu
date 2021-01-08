@@ -1,13 +1,18 @@
 FROM ubuntu:focal
 
-ENV LANG=C.UTF-8
-ENV LC_ALL=C.UTF-8
-ENV TIMEZONE=Asia/Shanghai
-
-ARG NVIM_VERSION
-ARG nvim_url=https://github.com/neovim/neovim/releases/download/${NVIM_VERSION:-nightly}/nvim-linux64.tar.gz
-
+ENV LANG=C.UTF-8 LC_ALL=C.UTF-8 TIMEZONE=Asia/Shanghai
 ENV PYTHONUNBUFFERED=x
+
+ARG nvim_repo=neovim/neovim
+ARG wasmtime_repo=bytecodealliance/wasmtime
+ARG just_repo=casey/just
+ARG watchexec_repo=watchexec/watchexec
+ARG yq_repo=mikefarah/yq
+ARG websocat_repo=vi/websocat
+ARG pup_repo=ericchiang/pup
+
+ARG github_header="Accept: application/vnd.github.v3+json"
+ARG github_api=https://api.github.com/repos
 
 RUN set -eux \
   ; apt-get update \
@@ -23,6 +28,9 @@ RUN set -eux \
   \
   ; curl -sL https://deb.nodesource.com/setup_14.x | bash - \
   ; apt-get install -y --no-install-recommends nodejs \
+  \
+  ; nvim_version=$(curl -sSL -H $github_header $github_api/${nvim_repo}/releases | jq -r '.[0].tag_name') \
+  ; nvim_url=https://github.com/${nvim_repo}/releases/download/${nvim_version}/nvim-linux64.tar.gz \
   ; curl -sSL ${nvim_url} | tar zxf - -C /usr/local --strip-components=1 \
   ; pip3 --no-cache-dir install neovim neovim-remote \
   ; mkdir -p /opt/language-server \
@@ -41,34 +49,27 @@ RUN set -eux \
         -e 's!.*\(PasswordAuthentication\).*yes!\1 no!' \
   ; apt-get autoremove -y && apt-get clean -y && rm -rf /var/lib/apt/lists/*
 
-ARG just_repo=casey/just
-ARG watchexec_repo=watchexec/watchexec
-ARG yq_repo=mikefarah/yq
-ARG websocat_repo=vi/websocat
-ARG pup_repo=ericchiang/pup
-ARG wasmtime_repo=bytecodealliance/wasmtime
-
 RUN set -ex \
-  ; just_version=$(curl -sSL -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/${just_repo}/releases | jq -r '.[0].tag_name') \
+  ; just_version=$(curl -sSL -H $github_header $github_api/${just_repo}/releases | jq -r '.[0].tag_name') \
   ; just_url=https://github.com/${just_repo}/releases/download/${just_version}/just-${just_version}-x86_64-unknown-linux-musl.tar.gz \
   ; wget -q -O- ${just_url} \
     | tar zxf - -C /usr/local/bin just \
-  ; watchexec_version=$(curl -sSL -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/${watchexec_repo}/releases | jq -r '.[0].tag_name') \
+  ; watchexec_version=$(curl -sSL -H $github_header $github_api/${watchexec_repo}/releases | jq -r '.[0].tag_name') \
   ; watchexec_url=https://github.com/${watchexec_repo}/releases/download/${watchexec_version}/watchexec-${watchexec_version}-x86_64-unknown-linux-musl.tar.xz \
   ; wget -q -O- ${watchexec_url} \
     | tar Jxf - --strip-components=1 -C /usr/local/bin watchexec-${watchexec_version}-x86_64-unknown-linux-musl/watchexec \
-  ; yq_version=$(curl -sSL -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/${yq_repo}/releases | jq -r '.[0].tag_name') \
+  ; yq_version=$(curl -sSL -H $github_header $github_api/${yq_repo}/releases | jq -r '.[0].tag_name') \
   ; yq_url=https://github.com/${yq_repo}/releases/download/${yq_version}/yq_linux_amd64 \
   ; wget -q -O /usr/local/bin/yq ${yq_url} \
     ; chmod +x /usr/local/bin/yq \
-  ; websocat_version=$(curl -sSL -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/${websocat_repo}/releases | jq -r '.[0].tag_name') \
+  ; websocat_version=$(curl -sSL -H $github_header $github_api/${websocat_repo}/releases | jq -r '.[0].tag_name') \
   ; websocat_url=https://github.com/${websocat_repo}/releases/download/${websocat_version}/websocat_amd64-linux-static \
   ; wget -q -O /usr/local/bin/websocat ${websocat_url} \
     ; chmod +x /usr/local/bin/websocat \
-  ; pup_version=$(curl -sSL -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/${pup_repo}/releases | jq -r '.[0].tag_name') \
-  ; pup_url=https://github.com/ericchiang/pup/releases/download/${pup_version}/pup_${pup_version}_linux_amd64.zip \
+  ; pup_version=$(curl -sSL -H $github_header $github_api/${pup_repo}/releases | jq -r '.[0].tag_name') \
+  ; pup_url=https://github.com/${pup_repo}/releases/download/${pup_version}/pup_${pup_version}_linux_amd64.zip \
   ; wget -O pup.zip ${pup_url} && unzip pup.zip && rm -f pup.zip && chmod +x pup && mv pup /usr/local/bin/ \
-  ; wasmtime_version=$(curl -sSL -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/${wasmtime_repo}/releases | jq -r '[.[]|select(.prerelease == false)][0].tag_name') \
+  ; wasmtime_version=$(curl -sSL -H $github_header $github_api/${wasmtime_repo}/releases | jq -r '[.[]|select(.prerelease == false)][0].tag_name') \
   ; wasmtime_url=https://github.com/${wasmtime_repo}/releases/download/${wasmtime_version}/wasmtime-${wasmtime_version}-x86_64-linux.tar.xz \
   ; wget -O- ${wasmtime_url} | tar Jxf - --strip-components=1 -C /usr/local/bin \
     wasmtime-${wasmtime_version}-x86_64-linux/wasmtime
