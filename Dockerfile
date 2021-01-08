@@ -68,7 +68,7 @@ RUN set -ex \
   ; pup_version=$(curl -sSL -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/${pup_repo}/releases | jq -r '.[0].tag_name') \
   ; pup_url=https://github.com/ericchiang/pup/releases/download/${pup_version}/pup_${pup_version}_linux_amd64.zip \
   ; wget -O pup.zip ${pup_url} && unzip pup.zip && rm -f pup.zip && chmod +x pup && mv pup /usr/local/bin/ \
-  ; wasmtime_version=$(curl -sSL -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/${wasmtime_repo}/releases | jq -r '.[0].tag_name') \
+  ; wasmtime_version=$(curl -sSL -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/${wasmtime_repo}/releases | jq -r '[.[]|select(.prerelease == false)][0].tag_name') \
   ; wasmtime_url=https://github.com/${wasmtime_repo}/releases/download/${wasmtime_version}/wasmtime-${wasmtime_version}-x86_64-linux.tar.xz \
   ; wget -O- ${wasmtime_url} | tar Jxf - --strip-components=1 -C /usr/local/bin \
     wasmtime-${wasmtime_version}-x86_64-linux/wasmtime
