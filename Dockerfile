@@ -76,18 +76,26 @@ RUN set -ex \
 
 # conf
 RUN set -eux \
-  ; mkdir /etc/skel/.zshrc.d \
-  ; git clone --depth=1 https://github.com/murphil/.zshrc.d.git /etc/skel/.zshrc.d \
-  ; mv /etc/skel/.zshrc.d/_zshrc /etc/skel/.zshrc \
-  ; mkdir /etc/skel/.config \
-  ; git clone --depth=1 https://github.com/murphil/nvim-coc.git /etc/skel/.config/nvim \
+  ; cfg_home=/etc/skel \
+  ; mkdir $cfg_home/.zshrc.d \
+  ; git clone --depth=1 https://github.com/murphil/.zshrc.d.git $cfg_home/.zshrc.d \
+  ; mv $cfg_home/.zshrc.d/_zshrc $cfg_home/.zshrc \
+  ; mkdir $cfg_home/.config \
+  ; nvim_home=$cfg_home/.config/nvim \
+  ; git clone --depth=1 https://github.com/murphil/nvim-coc.git $nvim_home \
   ; NVIM_SETUP_PLUGINS=1 \
-    nvim -u /etc/skel/.config/nvim/init.vim --headless +'PlugInstall' +qa \
-  ; rm -rf /etc/skel/.config/nvim/plugged/*/.git \
-  ; for x in $(cat /etc/skel/.config/nvim/coc-core-extensions) \
-  ; do nvim -u /etc/skel/.config/nvim/init.vim --headless +"CocInstall -sync coc-$x" +qa; done \
-  ; mv /etc/skel/.config/nvim/coc-data /opt \
-  ; ln -sf /opt/coc-data /etc/skel/.config/nvim \
+    nvim -u $nvim_home/init.vim --headless +'PlugInstall' +qa \
+  ; rm -rf $nvim_home/plugged/*/.git \
+  ; for x in $(cat $nvim_home/coc-core-extensions) \
+  ; do nvim -u $nvim_home/init.vim --headless +"CocInstall -sync coc-$x" +qa; done \
+  ; mv $nvim_home/coc-data /opt \
+  ; ln -sf /opt/coc-data $nvim_home \
+  ; coc_lua_bin_repo=josa42/coc-lua-binaries \
+  ; lua_ls_version=$(curl -sSL -H $github_header $github_api/${coc_lua_bin_repo}/releases | jq -r '.[0].tag_name') \
+  ; lua_ls_url=https://github.com/${coc_lua_bin_repo}/releases/download/${lua_ls_version}/lua-language-server-linux.tar.gz \
+  ; lua_coc_data=$nvim_home/coc-data/extensions/coc-lua-data \
+  ; mkdir -p $lua_coc_data \
+  ; wget -O- ${lua_ls_url} | tar zxf - -C $lua_coc_data \
   #; npm config set registry https://registry.npm.taobao.org \
   ; npm cache clean -f
 
