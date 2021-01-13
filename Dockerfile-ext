@@ -1,4 +1,0 @@
-FROM ub
-
-RUN curl google.ca
-
