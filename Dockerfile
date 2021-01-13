@@ -1,3 +1,4 @@
+FROM nnurphy/neovim:latest as neovim
 FROM ubuntu:focal
 
 ENV LANG=C.UTF-8 LC_ALL=C.UTF-8 TIMEZONE=Asia/Shanghai
@@ -15,6 +16,7 @@ ARG rg_repo=BurntSushi/ripgrep
 ARG github_header="Accept: application/vnd.github.v3+json"
 ARG github_api=https://api.github.com/repos
 
+COPY --from=neovim /root/local/nvim /usr/local
 RUN set -eux \
   ; apt-get update \
   ; apt-get upgrade -y \
@@ -30,9 +32,9 @@ RUN set -eux \
   ; curl -sL https://deb.nodesource.com/setup_14.x | bash - \
   ; apt-get install -y --no-install-recommends nodejs \
   \
-  ; nvim_version=$(curl -sSL -H $github_header $github_api/${nvim_repo}/releases | jq -r '.[0].tag_name') \
-  ; nvim_url=https://github.com/${nvim_repo}/releases/download/${nvim_version}/nvim-linux64.tar.gz \
-  ; curl -sSL ${nvim_url} | tar zxf - -C /usr/local --strip-components=1 \
+  #; nvim_version=$(curl -sSL -H $github_header $github_api/${nvim_repo}/releases | jq -r '.[0].tag_name') \
+  #; nvim_url=https://github.com/${nvim_repo}/releases/download/${nvim_version}/nvim-linux64.tar.gz \
+  #; curl -sSL ${nvim_url} | tar zxf - -C /usr/local --strip-components=1 \
   ; pip3 --no-cache-dir install neovim neovim-remote \
   ; mkdir -p /opt/language-server \
   \
