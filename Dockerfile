@@ -24,7 +24,7 @@ RUN set -eux \
       openssh-client openssh-server gnupg rsync \
       inetutils-ping net-tools iproute2 iptables \
       mlocate procps xz-utils zstd unzip tree \
-      zsh git curl wget tcpdump socat jq \
+      zsh git curl wget tcpdump socat jq build-essential \
       python3 python3-pip python3-setuptools ipython3 \
   \
   ; curl -sL https://deb.nodesource.com/setup_14.x | bash - \
