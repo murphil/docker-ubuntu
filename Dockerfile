@@ -78,7 +78,7 @@ RUN set -eux \
   ; cfg_home=/etc/skel \
   ; mkdir $cfg_home/.zshrc.d \
   ; git clone --depth=1 https://github.com/murphil/.zshrc.d.git $cfg_home/.zshrc.d \
-  ; mv $cfg_home/.zshrc.d/_zshrc $cfg_home/.zshrc \
+  ; cp $cfg_home/.zshrc.d/_zshrc $cfg_home/.zshrc \
   ; mkdir $cfg_home/.config \
   ; nvim_home=$cfg_home/.config/nvim \
   ; git clone --depth=1 https://github.com/murphil/nvim-coc.git $nvim_home \
