@@ -53,25 +53,25 @@ RUN set -eux \
 RUN set -ex \
   ; rg_version=$(curl -sSL -H $github_header $github_api/${rg_repo}/releases | jq -r '.[0].tag_name') \
   ; rg_url=https://github.com/${rg_repo}/releases/download/${rg_version}/ripgrep-${rg_version}-x86_64-unknown-linux-musl.tar.gz \
-  ; wget -q -O- ${rg_url} | tar zxf - -C /usr/local/bin --strip-components=1 ripgrep-${rg_version}-x86_64-unknown-linux-musl/rg \
+  ; wget -qO- ${rg_url} | tar zxf - -C /usr/local/bin --strip-components=1 ripgrep-${rg_version}-x86_64-unknown-linux-musl/rg \
   ; just_version=$(curl -sSL -H $github_header $github_api/${just_repo}/releases | jq -r '.[0].tag_name') \
   ; just_url=https://github.com/${just_repo}/releases/download/${just_version}/just-${just_version}-x86_64-unknown-linux-musl.tar.gz \
-  ; wget -q -O- ${just_url} | tar zxf - -C /usr/local/bin just \
+  ; wget -qO- ${just_url} | tar zxf - -C /usr/local/bin just \
   ; watchexec_version=$(curl -sSL -H $github_header $github_api/${watchexec_repo}/releases | jq -r '.[0].tag_name') \
   ; watchexec_url=https://github.com/${watchexec_repo}/releases/download/${watchexec_version}/watchexec-${watchexec_version}-x86_64-unknown-linux-musl.tar.xz \
-  ; wget -q -O- ${watchexec_url} | tar Jxf - --strip-components=1 -C /usr/local/bin watchexec-${watchexec_version}-x86_64-unknown-linux-musl/watchexec \
+  ; wget -qO- ${watchexec_url} | tar Jxf - --strip-components=1 -C /usr/local/bin watchexec-${watchexec_version}-x86_64-unknown-linux-musl/watchexec \
   ; yq_version=$(curl -sSL -H $github_header $github_api/${yq_repo}/releases | jq -r '.[0].tag_name') \
   ; yq_url=https://github.com/${yq_repo}/releases/download/${yq_version}/yq_linux_amd64 \
-  ; wget -q -O /usr/local/bin/yq ${yq_url} ; chmod +x /usr/local/bin/yq \
+  ; wget -qO /usr/local/bin/yq ${yq_url} ; chmod +x /usr/local/bin/yq \
   ; websocat_version=$(curl -sSL -H $github_header $github_api/${websocat_repo}/releases | jq -r '.[0].tag_name') \
   ; websocat_url=https://github.com/${websocat_repo}/releases/download/${websocat_version}/websocat_amd64-linux-static \
-  ; wget -q -O /usr/local/bin/websocat ${websocat_url} ; chmod +x /usr/local/bin/websocat \
+  ; wget -qO /usr/local/bin/websocat ${websocat_url} ; chmod +x /usr/local/bin/websocat \
   ; pup_version=$(curl -sSL -H $github_header $github_api/${pup_repo}/releases | jq -r '.[0].tag_name') \
   ; pup_url=https://github.com/${pup_repo}/releases/download/${pup_version}/pup_${pup_version}_linux_amd64.zip \
-  ; wget -O pup.zip ${pup_url} && unzip pup.zip && rm -f pup.zip && chmod +x pup && mv pup /usr/local/bin/ \
+  ; wget -qO pup.zip ${pup_url} && unzip pup.zip && rm -f pup.zip && chmod +x pup && mv pup /usr/local/bin/ \
   ; wasmtime_version=$(curl -sSL -H $github_header $github_api/${wasmtime_repo}/releases | jq -r '[.[]|select(.prerelease == false)][0].tag_name') \
   ; wasmtime_url=https://github.com/${wasmtime_repo}/releases/download/${wasmtime_version}/wasmtime-${wasmtime_version}-x86_64-linux.tar.xz \
-  ; wget -O- ${wasmtime_url} | tar Jxf - --strip-components=1 -C /usr/local/bin wasmtime-${wasmtime_version}-x86_64-linux/wasmtime
+  ; wget -qO- ${wasmtime_url} | tar Jxf - --strip-components=1 -C /usr/local/bin wasmtime-${wasmtime_version}-x86_64-linux/wasmtime
 
 # conf
 RUN set -eux \
@@ -94,7 +94,7 @@ RUN set -eux \
   ; lua_ls_url=https://github.com/${coc_lua_bin_repo}/releases/download/${lua_ls_version}/lua-language-server-linux.tar.gz \
   ; lua_coc_data=$nvim_home/coc-data/extensions/coc-lua-data \
   ; mkdir -p $lua_coc_data \
-  ; wget -O- ${lua_ls_url} | tar zxf - -C $lua_coc_data \
+  ; wget -qO- ${lua_ls_url} | tar zxf - -C $lua_coc_data \
   #; npm config set registry https://registry.npm.taobao.org \
   ; npm cache clean -f
 
