@@ -25,7 +25,7 @@ RUN set -eux \
       inetutils-ping net-tools iproute2 iptables \
       mlocate procps xz-utils zstd unzip tree \
       zsh git curl wget tcpdump socat jq build-essential \
-      python3 python3-pip python3-setuptools ipython3 \
+      python3 python3-dev python3-pip python3-setuptools ipython3 \
   \
   ; curl -sL https://deb.nodesource.com/setup_14.x | bash - \
   ; apt-get install -y --no-install-recommends nodejs \
