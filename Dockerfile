@@ -23,7 +23,7 @@ RUN set -eux \
       locales tzdata sudo ca-certificates pwgen \
       openssh-client openssh-server gnupg rsync \
       inetutils-ping net-tools iproute2 iptables \
-      mlocate procps xz-utils zstd unzip tree \
+      mlocate htop procps xz-utils zstd unzip tree \
       zsh git curl wget tcpdump socat jq build-essential \
       python3 python3-dev python3-pip python3-setuptools ipython3 \
   \
