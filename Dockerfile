@@ -38,7 +38,6 @@ RUN set -eux \
         PyParsing decorator more-itertools \
         typer hydra-core pyyaml \
         cachetools chronyk fn.py \
-  ; mkdir -p /opt/language-server \
   \
   ; ln -sf /usr/share/zoneinfo/$TIMEZONE /etc/localtime \
   ; echo "$TIMEZONE" > /etc/timezone \
@@ -83,6 +82,9 @@ RUN set -eux \
   ; mkdir $cfg_home/.zshrc.d \
   ; git clone --depth=1 https://github.com/murphil/.zshrc.d.git $cfg_home/.zshrc.d \
   ; cp $cfg_home/.zshrc.d/_zshrc $cfg_home/.zshrc \
+  \
+  ; mkdir -p /opt/language-server \
+  \
   ; mkdir $cfg_home/.config \
   ; nvim_home=$cfg_home/.config/nvim \
   ; git clone --depth=1 https://github.com/murphil/nvim-coc.git $nvim_home \
