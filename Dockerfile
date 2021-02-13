@@ -34,6 +34,10 @@ RUN set -eux \
   ; nvim_url=https://github.com/${nvim_repo}/releases/download/${nvim_version}/nvim-linux64.tar.gz \
   ; curl -sSL ${nvim_url} | tar zxf - -C /usr/local --strip-components=1 \
   ; pip3 --no-cache-dir install neovim neovim-remote \
+        fastapi uvicorn aiohttp \
+        PyParsing decorator more-itertools \
+        typer hydra-core pyyaml \
+        cachetools chronyk fn.py \
   ; mkdir -p /opt/language-server \
   \
   ; ln -sf /usr/share/zoneinfo/$TIMEZONE /etc/localtime \
@@ -89,6 +93,10 @@ RUN set -eux \
   ; do nvim -u $nvim_home/init.vim --headless +"CocInstall -sync coc-$x" +qa; done \
   ; mv $nvim_home/coc-data /opt \
   ; ln -sf /opt/coc-data $nvim_home \
+  \
+  ; SKIP_CYTHON_BUILD=1 $nvim_home/plugged/vimspector/install_gadget.py --enable-python \
+  ; rm -f $nvim_home/plugged/vimspector/gadgets/linux/download/debugpy/*/*.zip \
+  \
   ; coc_lua_bin_repo=josa42/coc-lua-binaries \
   ; lua_ls_version=$(curl -sSL -H "'$github_header'" $github_api/${coc_lua_bin_repo}/releases | jq -r '.[0].tag_name') \
   ; lua_ls_url=https://github.com/${coc_lua_bin_repo}/releases/download/${lua_ls_version}/lua-language-server-linux.tar.gz \
