@@ -36,7 +36,7 @@ RUN set -eux \
   ; pip3 --no-cache-dir install neovim neovim-remote \
         fastapi uvicorn aiohttp \
         PyParsing decorator more-itertools \
-        typer hydra-core pyyaml \
+        typer hydra-core pyyaml fabric \
         cachetools chronyk fn.py \
   \
   ; ln -sf /usr/share/zoneinfo/$TIMEZONE /etc/localtime \
