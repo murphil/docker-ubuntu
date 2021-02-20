@@ -90,7 +90,7 @@ RUN set -eux \
   ; git clone --depth=1 https://github.com/murphil/nvim-coc.git $nvim_home \
   ; NVIM_SETUP_PLUGINS=1 \
     nvim -u $nvim_home/init.vim --headless +'PlugInstall' +qa \
-  ; rm -rf $nvim_home/plugged/*/.git \
+  #; rm -rf $nvim_home/plugged/*/.git \
   ; for x in $(cat $nvim_home/coc-core-extensions) \
   ; do nvim -u $nvim_home/init.vim --headless +"CocInstall -sync coc-$x" +qa; done \
   ; mv $nvim_home/coc-data /opt \
