@@ -108,7 +108,7 @@ RUN set -eux \
   #; npm config set registry https://registry.npm.taobao.org \
   ; npm cache clean -f
 
-WORKDIR /root
+WORKDIR /world
 
 ENV SSH_USERS=
 ENV SSH_ENABLE_ROOT=

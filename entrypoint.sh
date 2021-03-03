@@ -106,11 +106,8 @@ set_user () {
 
         getent group ${_NAME} >/dev/null 2>&1 || groupadd -g ${_GID} ${_NAME}
         getent passwd ${_NAME} >/dev/null 2>&1 || useradd -m -u ${_UID} -g ${_GID} -G sudo -s /bin/zsh -c 'Engineer' ${_NAME}
-
-        cd /home/${_NAME}
     else
         cp -r /etc/skel/. /root
-        cd /root
     fi
 }
 
