@@ -93,8 +93,10 @@ RUN set -eux \
   #; rm -rf $nvim_home/plugged/*/.git \
   ; for x in $(cat $nvim_home/coc-core-extensions) \
   ; do nvim -u $nvim_home/init.vim --headless +"CocInstall -sync coc-$x" +qa; done \
-  ; mv $nvim_home/coc-data /opt \
+  ; mv $nvim_home/coc-data /opt && chmod -R 777 /opt/coc-data \
   ; ln -sf /opt/coc-data $nvim_home \
+  ; mv $nvim_home/plugged /opt \
+  ; ln -sf /opt/plugged $nvim_home \
   \
   ; SKIP_CYTHON_BUILD=1 $nvim_home/plugged/vimspector/install_gadget.py --enable-python \
   ; rm -f $nvim_home/plugged/vimspector/gadgets/linux/download/debugpy/*/*.zip \
