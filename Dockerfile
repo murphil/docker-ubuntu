@@ -34,7 +34,7 @@ RUN set -eux \
   ; nvim_url=https://github.com/${nvim_repo}/releases/download/${nvim_version}/nvim-linux64.tar.gz \
   ; curl -sSL ${nvim_url} | tar zxf - -C /usr/local --strip-components=1 \
   ; pip3 --no-cache-dir install neovim neovim-remote \
-        fastapi uvicorn aiohttp \
+        fastapi uvicorn aiohttp aiofile \
         PyParsing decorator more-itertools \
         typer hydra-core pyyaml invoke fabric \
         cachetools chronyk fn.py \
